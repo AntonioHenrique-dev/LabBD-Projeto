@@ -1,0 +1,124 @@
+erDiagram
+    GRUPOS_USUARIOS ||--o{ USUARIOS : "agrupa"
+    MORADORES |o--o| USUARIOS : "acessa como"
+    FUNCIONARIOS |o--o| USUARIOS : "acessa como"
+
+    UNIDADES ||--o{ MORADORES : "abriga"
+    UNIDADES ||--o{ VAGAS : "tem direito a"
+    MORADORES ||--o{ PETS : "possui"
+    MORADORES ||--o{ VEICULOS : "possui"
+    VAGAS |o--o| VEICULOS : "ocupada por"
+
+    AREAS_COMUNS ||--o{ RESERVAS : "recebe"
+    MORADORES ||--o{ RESERVAS : "faz"
+
+    MORADORES |o--o{ OCORRENCIAS : "abre"
+    UNIDADES |o--o{ OCORRENCIAS : "refere-se a"
+
+    MORADORES ||--o{ VISITANTES : "autoriza"
+    VISITANTES ||--o{ ACESSOS : "gera"
+    FUNCIONARIOS ||--o{ ACESSOS : "registra"
+
+    MORADORES ||--o{ ENCOMENDAS : "destinatario de"
+    UNIDADES ||--o{ ENCOMENDAS : "destino"
+    FUNCIONARIOS ||--o{ ENCOMENDAS : "recebe"
+
+    GRUPOS_USUARIOS {
+        tinyint id PK "fixo 1-4"
+        varchar nome UK
+        enum nivel_acesso
+        varchar descricao
+    }
+    USUARIOS {
+        char17 id PK "USR-AAAA-NNNNNN-D"
+        varchar login UK
+        char64 senha_hash
+        tinyint grupo_id FK
+        int morador_id FK "nulo"
+        int funcionario_id FK "nulo"
+        boolean ativo
+        datetime criado_em
+    }
+    UNIDADES {
+        int id PK
+        varchar bloco UK "bloco+numero"
+        varchar numero UK
+    }
+    MORADORES {
+        int id PK
+        varchar nome
+        varchar telefone
+        int unidade_id FK
+    }
+    PETS {
+        int id PK
+        varchar nome
+        varchar especie
+        int morador_id FK
+    }
+    FUNCIONARIOS {
+        int id PK
+        varchar nome
+        varchar cargo
+        decimal salario
+    }
+    VAGAS {
+        int id PK
+        varchar numero UK
+        int unidade_id FK
+    }
+    VEICULOS {
+        int id PK
+        varchar placa UK
+        varchar modelo
+        varchar cor
+        int morador_id FK
+        int vaga_id FK,UK "nulo"
+    }
+    AREAS_COMUNS {
+        int id PK
+        varchar nome UK
+        smallint capacidade
+    }
+    RESERVAS {
+        int id PK
+        int area_id FK
+        int morador_id FK
+        date data
+        time hora_inicio
+        time hora_fim
+    }
+    OCORRENCIAS {
+        char17 id PK "OCO-AAAA-NNNNNN-D"
+        varchar descricao
+        varchar registrado_por
+        int morador_id FK "nulo"
+        int unidade_id FK "nulo"
+        datetime data_registro
+        enum status
+    }
+    VISITANTES {
+        int id PK
+        varchar nome
+        varchar documento
+        int morador_id FK
+        boolean autorizado
+        datetime data_registro
+    }
+    ACESSOS {
+        char17 id PK "ACS-AAAA-NNNNNN-D"
+        int visitante_id FK
+        enum tipo
+        datetime data_hora
+        int registrado_por_id FK
+    }
+    ENCOMENDAS {
+        char17 id PK "ENC-AAAA-NNNNNN-D"
+        varchar descricao
+        int destinatario_id FK
+        int unidade_id FK
+        int recebida_por_id FK
+        datetime data_registro
+        boolean retirada
+        datetime data_retirada "nulo"
+    }

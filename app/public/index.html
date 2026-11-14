@@ -1,0 +1,76 @@
+<!doctype html>
+<html lang="pt-BR">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Condomínio · Portaria</title>
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+  <header class="topo">
+    <div>
+      <h1>Gestão de Condomínio</h1>
+      <p class="sub">Dados carregados do MySQL</p>
+    </div>
+    <div class="conexao" id="conexao">Conectando…</div>
+  </header>
+
+  <main>
+    <section class="grade">
+      <article class="cartao">
+        <header class="cartao-topo">
+          <h2>Portaria</h2>
+          <span class="origem">procedures sp_registrar_entrada / sp_registrar_saida</span>
+        </header>
+        <form id="form-portaria">
+          <label>Visitante
+            <select id="visitante" required></select>
+          </label>
+          <label>Porteiro
+            <select id="porteiro" required></select>
+          </label>
+          <div class="botoes">
+            <button type="submit" data-acao="entrada">Registrar entrada</button>
+            <button type="submit" data-acao="saida" class="secundario">Registrar saída</button>
+          </div>
+          <p id="mensagem" class="mensagem" role="status"></p>
+        </form>
+      </article>
+
+      <article class="cartao">
+        <header class="cartao-topo">
+          <h2>Visitantes presentes</h2>
+          <span class="origem view">view vw_visitantes_presentes</span>
+        </header>
+        <div class="tabela-rolagem"><table id="tab-presentes"></table></div>
+      </article>
+    </section>
+
+    <article class="cartao">
+      <header class="cartao-topo">
+        <h2>Últimas movimentações</h2>
+        <span class="origem">tabela acessos</span>
+      </header>
+      <div class="tabela-rolagem"><table id="tab-acessos"></table></div>
+    </article>
+
+    <article class="cartao">
+      <header class="cartao-topo">
+        <h2>Encomendas pendentes</h2>
+        <span class="origem view">view vw_encomendas_pendentes</span>
+      </header>
+      <div class="tabela-rolagem"><table id="tab-encomendas"></table></div>
+    </article>
+
+    <article class="cartao">
+      <header class="cartao-topo">
+        <h2>Moradores</h2>
+        <span class="origem">tabelas moradores + unidades</span>
+      </header>
+      <div class="tabela-rolagem"><table id="tab-moradores"></table></div>
+    </article>
+  </main>
+
+  <script src="app.js"></script>
+</body>
+</html>
